@@ -90,17 +90,22 @@ class Chat(object):
     # Shortcuts for working with lobby chats
     #
 
-    def join_lobby_chat(self, lobby_id):
+    def join_lobby_chat(self):
         """
         Shortcut function for joining lobby chats
 
         :param lobby_id: id of lobby to which chat we want to send message
         :type  lobby_id: :class:`str`
         """
-        self.join_chat("Lobby_%s" % lobby_id,
+        if not self.lobby:
+            if self.verbose_debug:
+                self._LOG.debug("Can't join lobby chat if you aren't in the lobby")
+                return
+
+        self.join_chat("Lobby_%s" % self.lobby.lobby_id,
                        DOTAChatChannelType_t.DOTAChannelType_Lobby)
 
-    def send_lobby_message(self, lobby_id, message):
+    def send_lobby_message(self, message):
         """
         Shortcut function for sending messages to lobby chat
 
@@ -109,7 +114,12 @@ class Chat(object):
         :param message: text of the message to send to lobby chat
         :type  message: :class:`str`
         """
-        self.send_message("Lobby_%s" % lobby_id,
+        if not self.lobby:
+            if self.verbose_debug:
+                self._LOG.debug("Can't send message to lobby chat if you aren't in the lobby")
+                return
+
+        self.send_message("Lobby_%s" % self.lobby.lobby_id,
                           DOTAChatChannelType_t.DOTAChannelType_Lobby,
                           message)
 
