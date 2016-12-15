@@ -36,7 +36,7 @@ class Chat(object):
                             (message.persona_name, channel.channel_name))
 
         self.emit(self.EVENT_CHAT_MESSAGE,
-                  channel.channel_name,
+                  channel,
                   message.persona_name,
                   message.text,
                   message)
